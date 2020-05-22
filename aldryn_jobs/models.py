@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
+
 
 from django import get_version
 from django.conf import settings
-from django.core.urlresolvers import reverse, NoReverseMatch
+from django.urls import reverse, NoReverseMatch
 from django.db import models
 from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
@@ -96,7 +96,8 @@ class JobCategory(TranslatedAutoSlugifyMixin,
     )
     app_config = models.ForeignKey(
         JobsConfig, null=True,
-        verbose_name=_('app configuration'), related_name='categories')
+        verbose_name=_('app configuration'), related_name='categories',
+        on_delete=models.CASCADE)
 
     ordering = models.IntegerField(_('ordering'), default=0)
 
@@ -167,7 +168,7 @@ class JobOpening(TranslatedAutoSlugifyMixin,
     )
 
     content = PlaceholderField('Job Opening Content')
-    category = models.ForeignKey(JobCategory, verbose_name=_('category'), related_name='jobs')
+    category = models.ForeignKey(JobCategory, verbose_name=_('category'), related_name='jobs', on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(_('active?'), default=True)
     publication_start = models.DateTimeField(_('published since'), null=True, blank=True)
@@ -273,7 +274,7 @@ class JobOpening(TranslatedAutoSlugifyMixin,
 
 @python_2_unicode_compatible
 class JobApplication(models.Model):
-    job_opening = models.ForeignKey(JobOpening, related_name='applications')
+    job_opening = models.ForeignKey(JobOpening, related_name='applications', on_delete=models.CASCADE)
     salutation = models.CharField(_('salutation'), max_length=20, blank=True)
     first_name = models.CharField(_('first name'), max_length=20)
     last_name = models.CharField(_('last name'), max_length=20)
@@ -305,7 +306,7 @@ def cleanup_attachments(sender, instance, **kwargs):
 
 class JobApplicationAttachment(models.Model):
     application = models.ForeignKey(JobApplication, related_name='attachments',
-                                    verbose_name=_('job application'))
+                                    verbose_name=_('job application'), on_delete=models.CASCADE)
     file = JobApplicationFileField()
 
 
@@ -314,12 +315,12 @@ class JobListPlugin(CMSPlugin):
     """ Store job list for JobListPlugin. """
 
     cmsplugin_ptr = models.OneToOneField(
-        CMSPlugin, related_name='aldryn_jobs_joblistplugin', parent_link=True)
+        CMSPlugin, related_name='aldryn_jobs_joblistplugin', parent_link=True, on_delete=models.CASCADE)
 
     app_config = models.ForeignKey(
         JobsConfig,
         verbose_name=_('app configuration'), null=True,
-        help_text=_('Select appropriate app. configuration for this plugin.'))
+        help_text=_('Select appropriate app. configuration for this plugin.'), on_delete=models.CASCADE)
 
     jobopenings = SortedManyToManyField(
         JobOpening, blank=True,
@@ -358,12 +359,14 @@ class JobCategoriesPlugin(CMSPlugin):
 
     cmsplugin_ptr = models.OneToOneField(
         CMSPlugin, related_name='aldryn_jobs_jobcategoriesplugin',
-        parent_link=True)
+        parent_link=True,
+        on_delete=models.CASCADE)
 
     app_config = models.ForeignKey(
         JobsConfig,
         verbose_name=_('app configuration'), null=True,
-        help_text=_('Select appropriate app. configuration for this plugin.'))
+        help_text=_('Select appropriate app. configuration for this plugin.'),
+        on_delete=models.CASCADE)
 
     def __str__(self):
         return _('%s categories') % (self.app_config.namespace,)

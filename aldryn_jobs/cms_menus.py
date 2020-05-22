@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
-from django.core.urlresolvers import NoReverseMatch
+from django.urls import NoReverseMatch
 from django.utils.translation import ugettext_lazy as _
 
 from cms.menu_bases import CMSAttachMenu
@@ -23,6 +19,7 @@ class JobCategoryMenu(CMSAttachMenu):
             app_namespace = self.instance.application_namespace
         except AttributeError:
             app_namespace = None
+
         language = get_language_from_request(request)
         nodes = []
         categories = (

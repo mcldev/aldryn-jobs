@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
+
 from os.path import splitext
 
 from cms.plugin_rendering import ContentRenderer
@@ -8,7 +8,7 @@ from aldryn_search.utils import strip_tags
 from django.utils.encoding import force_text
 from django.utils.text import smart_split
 from django.db import models
-from django.core.urlresolvers import reverse, NoReverseMatch
+from django.urls import reverse, NoReverseMatch
 from django.utils.text import get_valid_filename as get_valid_filename_django
 from django.template.defaultfilters import slugify
 from django.conf import settings

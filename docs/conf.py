@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 #
 # Aldryn Jobs documentation build configuration file, created by
 # sphinx-quickstart on Thu Jul  9 12:35:17 2015.

@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 import os
 import logging
 
@@ -12,7 +8,7 @@ from django.core.exceptions import (
     ValidationError,
     ImproperlyConfigured,
 )
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.translation import ugettext
 
 from aldryn_apphooks_config.utils import setup_config
@@ -21,6 +17,7 @@ from cms.models import Page
 from emailit.api import send_mail
 from multiupload.fields import MultiFileField
 from parler.forms import TranslatableModelForm
+from django.utils.translation import ugettext_lazy as _
 
 from .models import (
     JobApplication, JobApplicationAttachment, JobCategory, JobOpening,
@@ -122,10 +119,9 @@ class JobApplicationForm(forms.ModelForm):
 
     # Add Google ReCaptcha2 to protect the form input
     from django.apps import apps
-    if apps.is_installed("snowpenguin.django.recaptcha2"):
-        from snowpenguin.django.recaptcha2.fields import ReCaptchaField
-        from snowpenguin.django.recaptcha2.widgets import ReCaptchaWidget
-        captcha = ReCaptchaField(widget=ReCaptchaWidget())
+    if apps.is_installed("captcha"):
+        from captcha.fields import ReCaptchaField
+        captcha= ReCaptchaField(label=_('Are you a robot?'))
 
     def __init__(self, *args, **kwargs):
         self.job_opening = kwargs.pop('job_opening')

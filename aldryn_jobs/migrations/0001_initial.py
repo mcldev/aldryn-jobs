@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
+
 
 from django.db import models, migrations
 import app_data.fields
@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True, serialize=False)),
                 ('file', models.FileField(null=True, max_length=200, upload_to=aldryn_jobs.models.default_jobs_attachment_upload_to, blank=True)),
-                ('application', models.ForeignKey(verbose_name='job application', related_name='attachments', to='aldryn_jobs.JobApplication')),
+                ('application', models.ForeignKey(on_delete=models.deletion.CASCADE, verbose_name='job application', related_name='attachments', to='aldryn_jobs.JobApplication')),
             ],
             options={
             },
@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='JobCategoriesPlugin',
             fields=[
-                ('cmsplugin_ptr', models.OneToOneField(auto_created=True, parent_link=True, primary_key=True, serialize=False, to='cms.CMSPlugin')),
+                ('cmsplugin_ptr', models.OneToOneField(on_delete=models.deletion.CASCADE, auto_created=True, parent_link=True, primary_key=True, serialize=False, to='cms.CMSPlugin')),
             ],
             options={
                 'abstract': False,
@@ -79,7 +79,7 @@ class Migration(migrations.Migration):
                 ('language_code', models.CharField(db_index=True, verbose_name='Language', max_length=15)),
                 ('name', models.CharField(verbose_name='name', max_length=255)),
                 ('slug', models.SlugField(verbose_name='slug', max_length=255, help_text='Auto-generated. Used in the URL. If changed, the URL will change. Clear it to have the slug re-created.', blank=True)),
-                ('master', models.ForeignKey(null=True, related_name='translations', to='aldryn_jobs.JobCategory', editable=False)),
+                ('master', models.ForeignKey(on_delete=models.deletion.CASCADE, null=True, related_name='translations', to='aldryn_jobs.JobCategory', editable=False)),
             ],
             options={
                 'verbose_name': 'job category Translation',
@@ -93,7 +93,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='JobListPlugin',
             fields=[
-                ('cmsplugin_ptr', models.OneToOneField(auto_created=True, parent_link=True, primary_key=True, serialize=False, to='cms.CMSPlugin')),
+                ('cmsplugin_ptr', models.OneToOneField(on_delete=models.deletion.CASCADE, auto_created=True, parent_link=True, primary_key=True, serialize=False, to='cms.CMSPlugin')),
             ],
             options={
                 'abstract': False,
@@ -110,7 +110,7 @@ class Migration(migrations.Migration):
                 ('publication_end', models.DateTimeField(verbose_name='published until', blank=True, null=True)),
                 ('can_apply', models.BooleanField(verbose_name='viewer can apply for the job?', default=True)),
                 ('ordering', models.IntegerField(verbose_name='ordering', default=0)),
-                ('category', models.ForeignKey(verbose_name='category', related_name='jobs', to='aldryn_jobs.JobCategory')),
+                ('category', models.ForeignKey(on_delete=models.deletion.CASCADE, verbose_name='category', related_name='jobs', to='aldryn_jobs.JobCategory')),
                 ('content', cms.models.fields.PlaceholderField(slotname='Job Opening Content', null=True, to='cms.Placeholder', editable=False)),
             ],
             options={
@@ -128,7 +128,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(verbose_name='title', max_length=255)),
                 ('slug', models.SlugField(db_index=False, verbose_name='slug', max_length=255, help_text='Auto-generated. Used in the URL. If changed, the URL will change. Clear it to have the slug re-created.', blank=True)),
                 ('lead_in', djangocms_text_ckeditor.fields.HTMLField(verbose_name='short description', help_text='This text will be displayed in lists.', blank=True)),
-                ('master', models.ForeignKey(null=True, related_name='translations', to='aldryn_jobs.JobOpening', editable=False)),
+                ('master', models.ForeignKey(on_delete=models.deletion.CASCADE, null=True, related_name='translations', to='aldryn_jobs.JobOpening', editable=False)),
             ],
             options={
                 'verbose_name': 'job opening Translation',
@@ -167,7 +167,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='joblistplugin',
             name='app_config',
-            field=models.ForeignKey(verbose_name='app configuration', help_text='Select appropriate app. configuration for this plugin.', null=True, to='aldryn_jobs.JobsConfig'),
+            field=models.ForeignKey(on_delete=models.deletion.CASCADE, verbose_name='app configuration', help_text='Select appropriate app. configuration for this plugin.', null=True, to='aldryn_jobs.JobsConfig'),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -183,7 +183,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='jobcategory',
             name='app_config',
-            field=models.ForeignKey(verbose_name='app configuration', null=True, related_name='categories', to='aldryn_jobs.JobsConfig'),
+            field=models.ForeignKey(on_delete=models.deletion.CASCADE, verbose_name='app configuration', null=True, related_name='categories', to='aldryn_jobs.JobsConfig'),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -195,13 +195,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='jobcategoriesplugin',
             name='app_config',
-            field=models.ForeignKey(verbose_name='app configuration', help_text='Select appropriate app. configuration for this plugin.', null=True, to='aldryn_jobs.JobsConfig'),
+            field=models.ForeignKey(on_delete=models.deletion.CASCADE, verbose_name='app configuration', help_text='Select appropriate app. configuration for this plugin.', null=True, to='aldryn_jobs.JobsConfig'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='jobapplication',
             name='job_opening',
-            field=models.ForeignKey(to='aldryn_jobs.JobOpening', related_name='applications'),
+            field=models.ForeignKey(on_delete=models.deletion.CASCADE, to='aldryn_jobs.JobOpening', related_name='applications'),
             preserve_default=True,
         ),
     ]

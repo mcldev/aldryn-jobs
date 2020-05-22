@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
+
+
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -11,6 +11,7 @@ from cms.apphook_pool import apphook_pool
 
 class JobsApp(CMSConfigApp):
     name = _('Jobs')
+    app_name = 'aldryn_jobs'
     app_config = JobsConfig
 
     def get_urls(self, *args, **kwargs):
